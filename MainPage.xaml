@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1tesst.MainPage"
+             Shell.NavBarIsVisible="False"
+             Title="Thông tin sinh viên"
+             BackgroundColor="#F4F6F9">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        
+        <!-- Top Header -->
+        <StackLayout Grid.Row="0" BackgroundColor="White" Padding="20,15,20,12">
+            <Image Source="https://www.hactech.edu.vn/upload/images/Slide/Nhan%20dien%20TH%2008.2025/H4%2Cin%20n%E1%BB%81n%20t%E1%BB%91i%20(nen%20trong%20su%E1%BB%91t).png"
+                   HeightRequest="52"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Center"
+                   Margin="0,2,0,0" />
+            <BoxView HeightRequest="1" Color="#E2E8F0" Margin="0,10,0,0"/>
+        </StackLayout>
+
+        <!-- Content Area -->
+        <ScrollView Grid.Row="1" Padding="20">
+            <VerticalStackLayout Spacing="16">
+
+                <!-- Title -->
+                <Label Text="Thông tin sinh viên" 
+                       TextColor="#0F172A" 
+                       FontSize="22" 
+                       FontAttributes="Bold" 
+                       HorizontalTextAlignment="Center" 
+                       Margin="0,5,0,5" />
+
+                <!-- Error Message Alert Box -->
+                <Frame BackgroundColor="#FEF2F2" BorderColor="#FCA5A5" Padding="14" CornerRadius="10" HasShadow="False"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Label Text="⚠️" FontSize="18" VerticalOptions="Center" Margin="0,0,10,0" />
+                        <Label Grid.Column="1" Text="{Binding ErrorMessage}" TextColor="#991B1B" FontSize="13" VerticalOptions="Center" LineBreakMode="WordWrap" />
+                    </Grid>
+                </Frame>
+
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" Color="#C81E2B" Scale="1.4" HorizontalOptions="Center" Margin="0,10" />
+
+                <!-- Placeholder Card when StudentInfo is null -->
+                <Frame IsVisible="{Binding StudentInfo, Converter={StaticResource NullToBoolConverter}}"
+                       BackgroundColor="White" 
+                       BorderColor="#E2E8F0"
+                       CornerRadius="16"
+                       HasShadow="False"
+                       Padding="24,32">
+                    <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                        <Label Text="Chưa có thông tin sinh viên" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="#1E293B" 
+                               HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Student Info Card (Matches reference design) -->
+                <Frame IsVisible="{Binding StudentInfo, Converter={StaticResource NotNullToBoolConverter}}" 
+                       BackgroundColor="White" 
+                       BorderColor="#CBD5E1" 
+                       CornerRadius="16"
+                       HasShadow="False"
+                       Padding="24,24">
+
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,115,*" RowSpacing="18" VerticalOptions="Center">
+                        <!-- Họ và tên -->
+                        <Label Grid.Row="0" Grid.Column="0" Text="👤" FontSize="16" VerticalOptions="Center" Margin="0,0,10,0"/>
+                        <Label Grid.Row="0" Grid.Column="1" Text="Họ và tên:" TextColor="#334155" FontSize="14.5" VerticalOptions="Center"/>
+                        <Label Grid.Row="0" Grid.Column="2" Text="{Binding StudentInfo.HoTen}" TextColor="#0F172A" FontSize="14.5" VerticalOptions="Center"/>
+
+                        <!-- Ngày sinh -->
+                        <Label Grid.Row="1" Grid.Column="0" Text="♨️" FontSize="16" VerticalOptions="Center" Margin="0,0,10,0"/>
+                        <Label Grid.Row="1" Grid.Column="1" Text="Ngày sinh:" TextColor="#334155" FontSize="14.5" VerticalOptions="Center"/>
+                        <Label Grid.Row="1" Grid.Column="2" Text="{Binding StudentInfo.NgaySinh}" TextColor="#0F172A" FontSize="14.5" VerticalOptions="Center"/>
+
+                        <!-- Mã sinh viên -->
+                        <Label Grid.Row="2" Grid.Column="0" Text="🪪" FontSize="16" VerticalOptions="Center" Margin="0,0,10,0"/>
+                        <Label Grid.Row="2" Grid.Column="1" Text="Mã sinh viên:" TextColor="#334155" FontSize="14.5" VerticalOptions="Center"/>
+                        <Label Grid.Row="2" Grid.Column="2" Text="{Binding StudentInfo.MaSinhVien}" TextColor="#0F172A" FontSize="14.5" VerticalOptions="Center"/>
+
+                        <!-- Khóa -->
+                        <Label Grid.Row="3" Grid.Column="0" Text="📖" FontSize="16" VerticalOptions="Center" Margin="0,0,10,0"/>
+                        <Label Grid.Row="3" Grid.Column="1" Text="Khóa:" TextColor="#334155" FontSize="14.5" VerticalOptions="Center"/>
+                        <Label Grid.Row="3" Grid.Column="2" Text="{Binding StudentInfo.Khoa}" TextColor="#0F172A" FontSize="14.5" VerticalOptions="Center"/>
+
+                        <!-- Nghề -->
+                        <Label Grid.Row="4" Grid.Column="0" Text="💼" FontSize="16" VerticalOptions="Center" Margin="0,0,10,0"/>
+                        <Label Grid.Row="4" Grid.Column="1" Text="Nghề:" TextColor="#334155" FontSize="14.5" VerticalOptions="Center"/>
+                        <Label Grid.Row="4" Grid.Column="2" Text="{Binding StudentInfo.Nghe}" TextColor="#0F172A" FontSize="14.5" VerticalOptions="Center"/>
+
+                        <!-- Trạng thái -->
+                        <Label Grid.Row="5" Grid.Column="0" Text="🟢" FontSize="15" VerticalOptions="Center" Margin="0,0,10,0"/>
+                        <Label Grid.Row="5" Grid.Column="1" Text="Trạng thái:" TextColor="#334155" FontSize="14.5" VerticalOptions="Center"/>
+                        <Label Grid.Row="5" Grid.Column="2" Text="{Binding StudentInfo.TrangThai}" TextColor="#0F172A" FontSize="14.5" FontAttributes="Bold" VerticalOptions="Center"/>
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Action Button Area -->
+        <StackLayout Grid.Row="2" BackgroundColor="White" Padding="16,12" Spacing="10">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Command="{Binding ScanQRCommand}" 
+                        Text="QUÉT THẺ SINH VIÊN" 
+                        BackgroundColor="#C81E2B" 
+                        TextColor="White" 
+                        FontAttributes="Bold" 
+                        CornerRadius="10" 
+                        HeightRequest="50" 
+                        FontSize="14" />
+                <Button Grid.Column="1"
+                        Command="{Binding OpenDiplomaWebCommand}" 
+                        Text="TRA CỨU VĂN BẰNG" 
+                        BackgroundColor="#2563EB" 
+                        TextColor="White" 
+                        FontAttributes="Bold" 
+                        CornerRadius="10" 
+                        HeightRequest="50" 
+                        FontSize="14" />
+            </Grid>
+        </StackLayout>
+
+    </Grid>
+</ContentPage>
