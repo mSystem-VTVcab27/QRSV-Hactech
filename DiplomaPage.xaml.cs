@@ -26,6 +26,7 @@ namespace MauiApp1tesst
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            Services.StatusBarHelper.SetDarkStatusBarIcons();
             if (diplomaWebView.Source == null)
             {
                 LoadWebViewUrl();

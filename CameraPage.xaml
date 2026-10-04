@@ -5,43 +5,156 @@
              x:Class="MauiApp1tesst.CameraPage"
              Title=""
              Shell.NavBarIsVisible="False"
-             BackgroundColor="#1a1a2e">
+             BackgroundColor="#000000">
 
     <Grid RowDefinitions="*,Auto" Padding="0">
-        <!-- Live Camera Preview for QR Scanning -->
+        
+        <!-- Live Camera Barcode View (Background) -->
         <zxing:CameraBarcodeReaderView 
             x:Name="barcodeReader"
-            Grid.Row="0"
+            Grid.RowSpan="2"
+            IsDetecting="True"
             BarcodesDetected="OnBarcodesDetected"/>
 
-        <!-- Bottom Control Panel -->
-        <StackLayout Grid.Row="1" 
-                     Spacing="10" 
-                     Padding="20"
-                     BackgroundColor="#0d0d1b"
-                     Orientation="Vertical">
-            <Label Text="Hướng máy ảnh về phía mã QR để quét"
-                   FontSize="14"
-                   TextColor="#3B9DFF"
-                   HorizontalTextAlignment="Center" />
+        <!-- Main UI Layer -->
+        <Grid Grid.RowSpan="2" RowDefinitions="Auto,*,Auto,Auto" Padding="0">
+            
+            <!-- Top Bar (Header) -->
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Padding="20,40,20,10" VerticalOptions="Start">
+                <!-- Close / Exit Button -->
+                <Border Grid.Column="2" 
+                        BackgroundColor="#60000000" 
+                        StrokeShape="RoundRectangle 20" 
+                        Stroke="Transparent"
+                        Padding="10,6"
+                        HeightRequest="36"
+                        WidthRequest="36">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCancelClicked"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="✕" TextColor="White" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </Border>
+            </Grid>
 
-            <StackLayout Orientation="Horizontal" Spacing="10">
-                <Button Text="Bật/Tắt Đèn" 
-                        Clicked="OnToggleTorch"
-                        BackgroundColor="#00D084" 
-                        TextColor="White" 
-                        FontAttributes="Bold"
-                        Padding="15"
-                        HorizontalOptions="FillAndExpand" />
-                <Button Text="Hủy" 
-                        Clicked="OnCancelClicked"
-                        BackgroundColor="#FF6B6B" 
-                        TextColor="White" 
-                        FontAttributes="Bold"
-                        Padding="15"
-                        HorizontalOptions="FillAndExpand" />
-            </StackLayout>
-        </StackLayout>
+            <!-- Centered Scanner Frame Reticle -->
+            <Grid Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
+                <!-- Scanner Box Container (270x270) -->
+                <Grid WidthRequest="270" HeightRequest="270">
+                    
+                    <!-- Rounded White Border Reticle -->
+                    <Border Stroke="White" 
+                            StrokeThickness="4" 
+                            StrokeShape="RoundRectangle 28" 
+                            BackgroundColor="Transparent" 
+                            HorizontalOptions="Fill" 
+                            VerticalOptions="Fill" />
+
+                    <!-- Inner Guide Hint -->
+                    <Label Text="" 
+                           TextColor="#E2E8F0" 
+                           FontSize="12" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" 
+                           Opacity="0.8" />
+                </Grid>
+            </Grid>
+
+            <!-- Floating Control Buttons Row below Scanner Frame -->
+            <HorizontalStackLayout Grid.Row="2" 
+                                   Spacing="12" 
+                                   HorizontalOptions="Center" 
+                                   Margin="0,0,0,20">
+                
+                <!-- Tải ảnh lên (Pick Image) -->
+                <Border BackgroundColor="#70000000" 
+                        StrokeShape="RoundRectangle 22" 
+                        Stroke="Transparent" 
+                        Padding="16,10"
+                        HeightRequest="44">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnPickImageClicked"/>
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <Label Text="Tải ảnh lên" TextColor="White" FontSize="13" FontAttributes="Bold" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Toggle Flash/Torch Button -->
+                <Border x:Name="btnTorch"
+                        BackgroundColor="#70000000" 
+                        StrokeShape="RoundRectangle 22" 
+                        Stroke="Transparent" 
+                        WidthRequest="44" 
+                        HeightRequest="44">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnToggleTorch"/>
+                    </Border.GestureRecognizers>
+                    <Label x:Name="lblTorchIcon" 
+                           Text="⚡" 
+                           TextColor="White" 
+                           FontSize="16" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"/>
+                </Border>
+            </HorizontalStackLayout>
+
+            <!-- Floating Capsule Bottom Navigation Bar -->
+            <Grid Grid.Row="3" BackgroundColor="Transparent" Padding="16,4,16,12">
+                <Border BackgroundColor="#F0F7FF" 
+                        Stroke="#D0E3FF" 
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 35"
+                        Padding="6,4"
+                        HeightRequest="68">
+                    <Grid ColumnDefinitions="*,*,*">
+                        
+                        <!-- Tab 1: Quét thẻ (Active on CameraPage) -->
+                        <Border Grid.Column="0" 
+                                BackgroundColor="#DCEBFF"
+                                StrokeShape="RoundRectangle 28"
+                                Stroke="Transparent"
+                                Padding="0,6">
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="🔍" FontSize="18" HorizontalOptions="Center" TextColor="#2563EB"/>
+                                <Label Text="Quét" FontSize="12" FontAttributes="Bold" TextColor="#2563EB" HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Tab 2: Thông tin SV -->
+                        <Border Grid.Column="1" 
+                                BackgroundColor="Transparent"
+                                StrokeShape="RoundRectangle 28"
+                                Stroke="Transparent"
+                                Padding="0,6">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCancelClicked"/>
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="🪪" FontSize="18" HorizontalOptions="Center" TextColor="#475569"/>
+                                <Label Text="Thông tin SV" FontSize="12" FontAttributes="Bold" TextColor="#475569" HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Tab 3: Tra cứu VB -->
+                        <Border Grid.Column="2" 
+                                BackgroundColor="Transparent"
+                                StrokeShape="RoundRectangle 28"
+                                Stroke="Transparent"
+                                Padding="0,6">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnOpenDiplomaClicked"/>
+                            </Border.GestureRecognizers>
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="🎓" FontSize="18" HorizontalOptions="Center" TextColor="#475569"/>
+                                <Label Text="Tra cứu VB" FontSize="12" FontAttributes="Bold" TextColor="#475569" HorizontalOptions="Center"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </Grid>
     </Grid>
 
 </ContentPage>

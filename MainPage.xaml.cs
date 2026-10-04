@@ -13,5 +13,11 @@ namespace MauiApp1tesst
             _viewModel = viewModel;
             BindingContext = _viewModel;
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Services.StatusBarHelper.SetDarkStatusBarIcons();
+        }
     }
 }
