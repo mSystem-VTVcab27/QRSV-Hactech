@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1tesst.DiplomaPage"
+             Shell.NavBarIsVisible="False"
+             Title="Tra cứu văn bằng"
+             BackgroundColor="#F4F6F9">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Top Header -->
+        <Grid Grid.Row="0" BackgroundColor="White" Padding="20,15,20,12" ColumnDefinitions="Auto,*,Auto">
+            <Image Grid.Column="0"
+                   Source="https://www.hactech.edu.vn/upload/images/Slide/Nhan%20dien%20TH%2008.2025/H4%2Cin%20n%E1%BB%81n%20t%E1%BB%91i%20(nen%20trong%20su%E1%BB%91t).png"
+                   HeightRequest="40"
+                   Aspect="AspectFit"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   Margin="0,3,0,0" />
+
+            <Button Grid.Column="2" 
+                    Text="Tải lại" 
+                    Clicked="OnReloadClicked" 
+                    BackgroundColor="Transparent" 
+                    TextColor="#64748B" 
+                    FontSize="14" 
+                    Padding="5,0"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Loading Activity Indicator -->
+        <ActivityIndicator x:Name="loadingIndicator" Grid.Row="1" IsRunning="True" IsVisible="True" Color="#2563EB" HorizontalOptions="Center" VerticalOptions="Center" ZIndex="10"/>
+
+        <!-- Embedded WebView -->
+        <WebView x:Name="diplomaWebView"
+                 Grid.Row="1"
+                 Navigating="OnWebViewNavigating"
+                 Navigated="OnWebViewNavigated"/>
+
+        <!-- Floating Capsule Bottom Navigation Bar -->
+        <Grid Grid.Row="2" BackgroundColor="Transparent" Padding="16,4,16,12">
+            <Border BackgroundColor="#F0F7FF" 
+                    Stroke="#D0E3FF" 
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 35"
+                    Padding="6,4"
+                    HeightRequest="68">
+                <Grid ColumnDefinitions="*,*,*">
+                    
+                    <!-- Tab 1: Quét thẻ -->
+                    <Border Grid.Column="0" 
+                            BackgroundColor="Transparent"
+                            StrokeShape="RoundRectangle 28"
+                            Stroke="Transparent"
+                            Padding="0,6">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnScanTabClicked"/>
+                        </Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="🔍" FontSize="18" HorizontalOptions="Center" TextColor="#475569"/>
+                            <Label Text="Quét" FontSize="12" FontAttributes="Bold" TextColor="#475569" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Tab 2: Thông tin SV -->
+                    <Border Grid.Column="1" 
+                            BackgroundColor="Transparent"
+                            StrokeShape="RoundRectangle 28"
+                            Stroke="Transparent"
+                            Padding="0,6">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnHomeTabClicked"/>
+                        </Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="🪪" FontSize="18" HorizontalOptions="Center" TextColor="#475569"/>
+                            <Label Text="Thông tin SV" FontSize="12" FontAttributes="Bold" TextColor="#475569" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Tab 3: Tra cứu VB (Active on DiplomaPage) -->
+                    <Border Grid.Column="2" 
+                            BackgroundColor="#DCEBFF"
+                            StrokeShape="RoundRectangle 28"
+                            Stroke="Transparent"
+                            Padding="0,6">
+                        <VerticalStackLayout Spacing="2" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Text="🎓" FontSize="18" HorizontalOptions="Center" TextColor="#2563EB"/>
+                            <Label Text="Tra cứu VB" FontSize="12" FontAttributes="Bold" TextColor="#2563EB" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>
